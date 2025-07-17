@@ -1,15 +1,13 @@
 async function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 44.83762, lng: 13.12146 }, // Adria-Zentrum
+    center: { lat: 44.83762, lng: 13.12146 },
     zoom: 8,
     mapTypeId: "roadmap",
   });
 
-  // JSON-Daten laden
   const response = await fetch("https://w2h-json.netlify.app/location_export_de.json");
   const locations = await response.json();
 
-  // Marker setzen
   locations.forEach((item) => {
     if (!item.lat || !item.lng) return;
 
@@ -32,4 +30,5 @@ async function initMap() {
   });
 }
 
+// 🔧 WICHTIG!
 window.initMap = initMap;
