@@ -1,0 +1,5 @@
+[[headers]]
+  for = "/location_export_de.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET"
