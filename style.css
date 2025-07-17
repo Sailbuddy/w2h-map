@@ -1,0 +1,14 @@
+/* style.css – Grundlayout für Wind2Horizon-Karte */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #f5faff; /* sanftes Wind2Horizon-Blau */
+}
+
+#map {
+  height: 700px;
+  width: 100%;
+  border: none;
+}
