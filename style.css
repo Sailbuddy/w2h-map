@@ -5,10 +5,23 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: #f5faff; /* sanftes Wind2Horizon-Blau */
+  display: flex;
+  justify-content: center;
 }
 
 #map {
-  height: 700px;
-  width: 100%;
+  height: 900px;
+  width: 77%;
   border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* optionaler Schatten für Tiefe */
+  border-radius: 12px; /* abgerundete Ecken, wenn du’s magst */
+}
+
+/* 📱 Mobile Ansicht */
+@media (max-width: 768px) {
+  #map {
+    width: 100%;
+    height: 500px;
+    border-radius: 0;
+  }
 }
