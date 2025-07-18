@@ -1,8 +1,32 @@
+// Stil für cleane Karte mit Wasserfarbe & Straßennamen
+const cleanMapStyle = [
+  {
+    featureType: "poi",
+    stylers: [{ visibility: "off" }]
+  },
+  {
+    featureType: "transit",
+    stylers: [{ visibility: "off" }]
+  },
+  {
+    featureType: "road",
+    elementType: "labels",
+    stylers: [{ visibility: "on" }] // Straßennamen sichtbar
+  },
+  {
+    featureType: "water",
+    stylers: [
+      { color: "#b3d9ff" }  // sanftes Wasserblau
+    ]
+  }
+];
+
 async function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 44.83762, lng: 13.12146 },
     zoom: 8,
     mapTypeId: "roadmap",
+    styles: cleanMapStyle
   });
 
   try {
@@ -22,7 +46,7 @@ async function initMap() {
       const marker = new google.maps.Marker({
         position: { lat: item.lat, lng: item.lng },
         map,
-        title: item.display_name || "Unbenannter Ort",
+        title: item.display_name || "Unbenannter Ort"
       });
 
       const infoWindow = new google.maps.InfoWindow({
@@ -43,5 +67,5 @@ async function initMap() {
   }
 }
 
-// 🔧 WICHTIG!
+// Wichtig!
 window.initMap = initMap;
