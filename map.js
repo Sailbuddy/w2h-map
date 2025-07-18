@@ -5,29 +5,42 @@ async function initMap() {
     mapTypeId: "roadmap",
   });
 
-  const response = await fetch("https://w2h-json.netlify.app/data/locations.json");
-  const locations = await response.json();
+  try {
+    const response = await fetch("https://w2h-json-exports.netlify.app/data/locations.json");
+    if (!response.ok) throw new Error("Fehler beim Laden der Daten");
 
-  locations.forEach((item) => {
-    if (!item.lat || !item.lng) return;
+    const locations = await response.json();
 
-    const marker = new google.maps.Marker({
-      position: { lat: item.lat, lng: item.lng },
-      map,
-      title: item.display_name || "Unbenannter Ort",
+    if (!Array.isArray(locations) || locations.length === 0) {
+      console.warn("Keine Marker gefunden.");
+      return;
+    }
+
+    locations.forEach((item) => {
+      if (!item.lat || !item.lng) return;
+
+      const marker = new google.maps.Marker({
+        position: { lat: item.lat, lng: item.lng },
+        map,
+        title: item.display_name || "Unbenannter Ort",
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<div style="font-family:sans-serif;">
+                    <strong>${item.display_name || "Unbenannter Ort"}</strong><br/>
+                    Kategorie: ${item.category_name || "–"}
+                  </div>`
+      });
+
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
     });
 
-    const infoWindow = new google.maps.InfoWindow({
-      content: `<div style="font-family:sans-serif;">
-                  <strong>${item.display_name || "Unbenannter Ort"}</strong><br/>
-                  Kategorie: ${item.category_name || "–"}
-                </div>`
-    });
-
-    marker.addListener("click", () => {
-      infoWindow.open(map, marker);
-    });
-  });
+    console.log(`${locations.length} Marker geladen.`);
+  } catch (error) {
+    console.error("Fehler beim Initialisieren der Karte:", error);
+  }
 }
 
 // 🔧 WICHTIG!
