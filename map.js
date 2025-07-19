@@ -8,7 +8,7 @@ async function initMap() {
     zoom: 6,
   });
 
-  const response = await fetch("https://w2h-json.netlify.app/location_export_de.json");
+  const response = await fetch("https://w2h-json.netlify.app/location_de.json");
   const locations = await response.json();
 
   // Alle Kategorien sammeln
