@@ -5,9 +5,62 @@
   <title>Wind2Horizon – Interaktive Karte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Direkt hier eingebaut – kann später in style.css verschoben werden */
+    #layer-toggle {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 50%;
+      padding: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 1001;
+      font-size: 1.2em;
+    }
+
+    #layer-panel {
+      position: absolute;
+      bottom: 70px;
+      right: 20px;
+      width: 220px;
+      max-height: 300px;
+      overflow-y: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 1em;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
+      display: none;
+      z-index: 1000;
+      font-family: sans-serif;
+    }
+
+    #layer-panel h3 {
+      margin-top: 0;
+      font-size: 1em;
+    }
+
+    #layer-controls label {
+      display: block;
+      margin: 0.5em 0;
+      cursor: pointer;
+    }
+
+    #layer-controls input {
+      margin-right: 0.5em;
+    }
+  </style>
 </head>
 <body>
   <div id="map"></div>
+
+  <!-- 🧭 Layer UI -->
+  <div id="layer-toggle" title="Kategorien anzeigen">🧭</div>
+  <div id="layer-panel">
+    <h3>Kategorien</h3>
+    <div id="layer-controls"></div>
+  </div>
 
   <!-- 1. map.js zuerst laden, um window.initMap zu registrieren -->
   <script src="map.js"></script>

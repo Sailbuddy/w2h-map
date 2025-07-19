@@ -21,6 +21,16 @@ const cleanMapStyle = [
   }
 ];
 
+// Layer-Marker-Speicher
+const layers = {};
+const layerControlsContainer = document.getElementById("layer-controls");
+
+// Layerpanel ein-/ausblenden
+document.getElementById("layer-toggle").addEventListener("click", () => {
+  const panel = document.getElementById("layer-panel");
+  panel.style.display = panel.style.display === "block" ? "none" : "block";
+});
+
 async function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 44.83762, lng: 13.12146 },
@@ -43,10 +53,13 @@ async function initMap() {
     locations.forEach((item) => {
       if (!item.lat || !item.lng) return;
 
+      const cat = item.category_name || "Unkategorisiert";
+
       const marker = new google.maps.Marker({
         position: { lat: item.lat, lng: item.lng },
         map,
         title: item.display_name || "Unbenannter Ort"
+        // icon: getCustomIcon(cat) // optional für später
       });
 
       const infoWindow = new google.maps.InfoWindow({
@@ -59,6 +72,14 @@ async function initMap() {
       marker.addListener("click", () => {
         infoWindow.open(map, marker);
       });
+
+      // Layer-Verwaltung
+      if (!layers[cat]) {
+        layers[cat] = [];
+        createLayerToggle(cat, map); // UI-Checkbox erstellen
+      }
+
+      layers[cat].push(marker);
     });
 
     console.log(`${locations.length} Marker geladen.`);
@@ -67,5 +88,23 @@ async function initMap() {
   }
 }
 
-// Wichtig!
-window.initMap = initMap;
+// Sichtbarkeit steuern
+function toggleLayer(cat, visible, map) {
+  layers[cat].forEach(marker => marker.setMap(visible ? map : null));
+}
+
+// UI-Element für Layer erzeugen
+function createLayerToggle(cat, map) {
+  const label = document.createElement("label");
+  label.innerHTML = `
+    <input type="checkbox" checked onchange="toggleLayer('${cat}', this.checked, window._activeMap)"> ${cat}
+  `;
+  layerControlsContainer.appendChild(label);
+}
+
+// Map-Referenz global speichern für Zugriff in Eventhandlern
+window.initMap = () => {
+  initMap().then(map => {
+    window._activeMap = map;
+  });
+};
