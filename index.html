@@ -2,73 +2,40 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Wind2Horizon – Interaktive Karte</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Wind2Horizon – Kartenlayer</title>
   <style>
-    /* Direkt hier eingebaut – kann später in style.css verschoben werden */
-    #layer-toggle {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background: white;
-      border-radius: 50%;
-      padding: 10px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.2);
-      cursor: pointer;
-      z-index: 1001;
-      font-size: 1.2em;
+    html, body, #map {
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
-
-    #layer-panel {
+    #layerControl {
       position: absolute;
-      bottom: 70px;
-      right: 20px;
-      width: 220px;
-      max-height: 300px;
-      overflow-y: auto;
-      background: white;
-      border-radius: 12px;
+      top: 1em;
+      left: 1em;
+      background: rgba(255, 255, 255, 0.95);
       padding: 1em;
-      box-shadow: 0 0 10px rgba(0,0,0,0.25);
-      display: none;
-      z-index: 1000;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       font-family: sans-serif;
+      z-index: 1000;
+      max-height: 90%;
+      overflow-y: auto;
     }
-
-    #layer-panel h3 {
-      margin-top: 0;
-      font-size: 1em;
-    }
-
-    #layer-controls label {
+    label {
       display: block;
-      margin: 0.5em 0;
+      margin-bottom: 0.5em;
       cursor: pointer;
-    }
-
-    #layer-controls input {
-      margin-right: 0.5em;
     }
   </style>
 </head>
 <body>
   <div id="map"></div>
+  <div id="layerControl"></div>
 
-  <!-- 🧭 Layer UI -->
-  <div id="layer-toggle" title="Kategorien anzeigen">🧭</div>
-  <div id="layer-panel">
-    <h3>Kategorien</h3>
-    <div id="layer-controls"></div>
-  </div>
-
-  <!-- 1. map.js zuerst laden, um window.initMap zu registrieren -->
   <script src="map.js"></script>
-
-  <!-- 2. Danach Google Maps API mit Callback -->
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfMmxL366B8HQfSnfvulsiDJP-FkDTorU&callback=initMap"
-    async defer>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap">
   </script>
 </body>
 </html>

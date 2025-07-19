@@ -1,111 +1,68 @@
-// Stil für cleane Karte mit Wasserfarbe & Straßennamen
-const cleanMapStyle = [
-  {
-    featureType: "poi",
-    stylers: [{ visibility: "off" }]
-  },
-  {
-    featureType: "transit",
-    stylers: [{ visibility: "off" }]
-  },
-  {
-    featureType: "road",
-    elementType: "labels",
-    stylers: [{ visibility: "on" }] // Straßennamen sichtbar
-  },
-  {
-    featureType: "water",
-    stylers: [{ color: "#b3d9ff" }]  // sanftes Wasserblau
-  }
-];
-
-// Globale Map-Referenz für alle Funktionen
 let map;
+let allMarkers = [];
+let activeCategories = new Set();
+let allLocations = [];
 
-// Layer-Marker-Speicher
-const layers = {};
-const layerControlsContainer = document.getElementById("layer-controls");
-
-// Layerpanel ein-/ausblenden
-document.getElementById("layer-toggle").addEventListener("click", () => {
-  const panel = document.getElementById("layer-panel");
-  panel.style.display = panel.style.display === "block" ? "none" : "block";
-});
-
-async function initMap() {
+function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 44.83762, lng: 13.12146 },
-    zoom: 8,
-    mapTypeId: "roadmap",
-    styles: cleanMapStyle
+    center: { lat: 45.0, lng: 15.0 },
+    zoom: 6,
   });
 
-  try {
-    const lang = navigator.language.slice(0, 2); // z. B. "de", "en"
-    const validLangs = ["de", "en", "fr", "it", "hr"];
-    const language = validLangs.includes(lang) ? lang : "en";
+  fetch("data/locations_de.json")
+    .then(res => res.json())
+    .then(data => {
+      allLocations = data;
+      setupCategoryUI(data);
+      loadMarkers();
+    })
+    .catch(err => console.error("Fehler beim Laden der JSON:", err));
+}
 
-    // ✅ Geänderter Pfad (ohne /public/)
-    const response = await fetch(`https://w2h-json.netlify.app/data/locations_${language}.json`);
-    if (!response.ok) throw new Error("Fehler beim Laden der Daten");
+function setupCategoryUI(locations) {
+  const container = document.getElementById("layerControl");
+  const categories = [...new Set(locations.map(l => l.category_name_de))].sort();
 
-    const locations = await response.json();
+  categories.forEach(cat => {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = true;
+    cb.value = cat;
 
-    if (!Array.isArray(locations) || locations.length === 0) {
-      console.warn("Keine Marker gefunden.");
-      return;
-    }
-
-    locations.forEach((item) => {
-      if (!item.lat || !item.lng) return;
-
-      const cat = item.category_name || "Unkategorisiert";
-
-      const marker = new google.maps.Marker({
-        position: { lat: item.lat, lng: item.lng },
-        map,
-        title: item.display_name || "Unbenannter Ort"
-      });
-
-      const infoWindow = new google.maps.InfoWindow({
-        content: `<div style="font-family:sans-serif;">
-                    <strong>${item.display_name || "Unbenannter Ort"}</strong><br/>
-                    Kategorie: ${item.category_name || "–"}
-                  </div>`
-      });
-
-      marker.addListener("click", () => {
-        infoWindow.open(map, marker);
-      });
-
-      // Layer-Verwaltung
-      if (!layers[cat]) {
-        layers[cat] = [];
-        createLayerToggle(cat);
+    cb.addEventListener("change", () => {
+      if (cb.checked) {
+        activeCategories.add(cat);
+      } else {
+        activeCategories.delete(cat);
       }
-
-      layers[cat].push(marker);
+      loadMarkers();
     });
 
-    console.log(`${locations.length} Marker geladen.`);
-  } catch (error) {
-    console.error("Fehler beim Initialisieren der Karte:", error);
-  }
+    label.appendChild(cb);
+    label.append(` ${cat}`);
+    container.appendChild(label);
+
+    activeCategories.add(cat);
+  });
 }
 
-// Sichtbarkeit steuern
-function toggleLayer(cat, visible) {
-  layers[cat].forEach(marker => marker.setMap(visible ? map : null));
-}
+function loadMarkers() {
+  // Entferne alte Marker
+  allMarkers.forEach(marker => marker.setMap(null));
+  allMarkers = [];
 
-// UI-Element für Layer erzeugen
-function createLayerToggle(cat) {
-  const label = document.createElement("label");
-  label.innerHTML = `
-    <input type="checkbox" checked onchange="toggleLayer('${cat}', this.checked)"> ${cat}
-  `;
-  layerControlsContainer.appendChild(label);
-}
+  // Filtere Marker nach aktiven Kategorien
+  allLocations.forEach(loc => {
+    const cat = loc.category_name_de;
+    if (!activeCategories.has(cat)) return;
 
-// 🧭 Google API Callback-Zuweisung
-window.initMap = initMap;
+    const marker = new google.maps.Marker({
+      position: { lat: loc.lat, lng: loc.lng },
+      map,
+      title: loc.display_name || loc.category_name_de,
+    });
+
+    allMarkers.push(marker);
+  });
+}
