@@ -21,6 +21,9 @@ const cleanMapStyle = [
   }
 ];
 
+// Globale Map-Referenz für alle Funktionen
+let map;
+
 // Layer-Marker-Speicher
 const layers = {};
 const layerControlsContainer = document.getElementById("layer-controls");
@@ -32,15 +35,12 @@ document.getElementById("layer-toggle").addEventListener("click", () => {
 });
 
 async function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 44.83762, lng: 13.12146 },
     zoom: 8,
     mapTypeId: "roadmap",
     styles: cleanMapStyle
   });
-
-  // 🌍 Sprache ermitteln (HTML-Attribut oder Fallback)
-  const lang = document.documentElement.lang || "de";
 
   try {
     const response = await fetch("https://w2h-json-exports.netlify.app/data/locations.json");
@@ -56,20 +56,18 @@ async function initMap() {
     locations.forEach((item) => {
       if (!item.lat || !item.lng) return;
 
-      // 🏷️ Sprachabhängiger Kategoriename
-      const cat = item[`category_name_${lang}`] || "Unkategorisiert";
+      const cat = item.category_name || "Unkategorisiert";
 
       const marker = new google.maps.Marker({
         position: { lat: item.lat, lng: item.lng },
         map,
         title: item.display_name || "Unbenannter Ort"
-        // icon: getCustomIcon(cat) // optional für später
       });
 
       const infoWindow = new google.maps.InfoWindow({
         content: `<div style="font-family:sans-serif;">
                     <strong>${item.display_name || "Unbenannter Ort"}</strong><br/>
-                    Kategorie: ${cat}
+                    Kategorie: ${item.category_name || "–"}
                   </div>`
       });
 
