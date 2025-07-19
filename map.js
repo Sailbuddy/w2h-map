@@ -76,7 +76,7 @@ async function initMap() {
       // Layer-Verwaltung
       if (!layers[cat]) {
         layers[cat] = [];
-        createLayerToggle(cat, map); // UI-Checkbox erstellen
+        createLayerToggle(cat);
       }
 
       layers[cat].push(marker);
@@ -89,22 +89,18 @@ async function initMap() {
 }
 
 // Sichtbarkeit steuern
-function toggleLayer(cat, visible, map) {
+function toggleLayer(cat, visible) {
   layers[cat].forEach(marker => marker.setMap(visible ? map : null));
 }
 
 // UI-Element für Layer erzeugen
-function createLayerToggle(cat, map) {
+function createLayerToggle(cat) {
   const label = document.createElement("label");
   label.innerHTML = `
-    <input type="checkbox" checked onchange="toggleLayer('${cat}', this.checked, window._activeMap)"> ${cat}
+    <input type="checkbox" checked onchange="toggleLayer('${cat}', this.checked)"> ${cat}
   `;
   layerControlsContainer.appendChild(label);
 }
 
-// Map-Referenz global speichern für Zugriff in Eventhandlern
-window.initMap = () => {
-  initMap().then(map => {
-    window._activeMap = map;
-  });
-};
+// 🧭 Google API Callback-Zuweisung
+window.initMap = initMap;
