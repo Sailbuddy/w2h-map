@@ -39,6 +39,9 @@ async function initMap() {
     styles: cleanMapStyle
   });
 
+  // 🌍 Sprache ermitteln (HTML-Attribut oder Fallback)
+  const lang = document.documentElement.lang || "de";
+
   try {
     const response = await fetch("https://w2h-json-exports.netlify.app/data/locations.json");
     if (!response.ok) throw new Error("Fehler beim Laden der Daten");
@@ -53,7 +56,8 @@ async function initMap() {
     locations.forEach((item) => {
       if (!item.lat || !item.lng) return;
 
-      const cat = item.category_name || "Unkategorisiert";
+      // 🏷️ Sprachabhängiger Kategoriename
+      const cat = item[`category_name_${lang}`] || "Unkategorisiert";
 
       const marker = new google.maps.Marker({
         position: { lat: item.lat, lng: item.lng },
@@ -65,7 +69,7 @@ async function initMap() {
       const infoWindow = new google.maps.InfoWindow({
         content: `<div style="font-family:sans-serif;">
                     <strong>${item.display_name || "Unbenannter Ort"}</strong><br/>
-                    Kategorie: ${item.category_name || "–"}
+                    Kategorie: ${cat}
                   </div>`
       });
 
