@@ -15,9 +15,7 @@ const cleanMapStyle = [
   },
   {
     featureType: "water",
-    stylers: [
-      { color: "#b3d9ff" }  // sanftes Wasserblau
-    ]
+    stylers: [{ color: "#b3d9ff" }]  // sanftes Wasserblau
   }
 ];
 
@@ -43,7 +41,11 @@ async function initMap() {
   });
 
   try {
-    const response = await fetch("https://w2h-json-exports.netlify.app/data/locations.json");
+    const lang = navigator.language.slice(0, 2); // z. B. "de", "en"
+    const validLangs = ["de", "en", "fr", "it", "hr"];
+    const language = validLangs.includes(lang) ? lang : "en";
+
+    const response = await fetch(`https://w2h-json.netlify.app/public/data/locations_${language}.json`);
     if (!response.ok) throw new Error("Fehler beim Laden der Daten");
 
     const locations = await response.json();
