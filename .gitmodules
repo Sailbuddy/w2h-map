@@ -1,0 +1,3 @@
+[submodule "public/data-source"]
+	path = public/data-source
+	url = https://github.com/Sailbuddy/w2h-json-exports
