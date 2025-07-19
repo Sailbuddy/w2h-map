@@ -1,0 +1,33 @@
+name: 🔁 Sync JSON from w2h-json-exports
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Täglich um 03:00 UTC
+  workflow_dispatch:     # Manuell auslösbar
+
+jobs:
+  sync-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Repo klonen
+        uses: actions/checkout@v3
+
+      - name: 📁 public/data Ordner sicherstellen
+        run: mkdir -p public/data
+
+      - name: 🔽 Lade JSON-Dateien von w2h-json
+        run: |
+          cd public/data
+          wget -q https://w2h-json.netlify.app/data/location_de.json
+          wget -q https://w2h-json.netlify.app/data/location_en.json
+          wget -q https://w2h-json.netlify.app/data/categories_de.json
+          wget -q https://w2h-json.netlify.app/data/categories_en.json
+          # weitere Dateien bei Bedarf…
+
+      - name: 📤 Commit & Push Änderungen
+        run: |
+          git config user.name "w2h bot"
+          git config user.email "bot@wind2horizon.com"
+          git add public/data/*.json
+          git commit -m "🔁 Auto-Sync JSON-Daten von w2h-json-exports" || echo "No changes to commit"
+          git push
