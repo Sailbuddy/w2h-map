@@ -45,7 +45,8 @@ async function initMap() {
     const validLangs = ["de", "en", "fr", "it", "hr"];
     const language = validLangs.includes(lang) ? lang : "en";
 
-    const response = await fetch(`https://w2h-json.netlify.app/public/data/locations_${language}.json`);
+    // ✅ Geänderter Pfad (ohne /public/)
+    const response = await fetch(`https://w2h-json.netlify.app/data/locations_${language}.json`);
     if (!response.ok) throw new Error("Fehler beim Laden der Daten");
 
     const locations = await response.json();
