@@ -1,13 +1,14 @@
-name: 🔁 Sync JSON from w2h-json-exports
+name: 🔁 sync-json
 
 on:
+  workflow_dispatch:    # Manuell auslösbar
   schedule:
-    - cron: "0 3 * * *"  # Täglich um 03:00 UTC
-  workflow_dispatch:     # Manuell auslösbar
+    - cron: '15 4 * * *'  # Täglich um 04:15 UTC
 
 jobs:
-  sync-json:
+  sync:
     runs-on: ubuntu-latest
+
     steps:
       - name: 📥 Repo klonen
         uses: actions/checkout@v3
@@ -17,17 +18,15 @@ jobs:
 
       - name: 🔽 Lade JSON-Dateien von w2h-json
         run: |
-          cd public/data
-          wget -q https://w2h-json.netlify.app/data/location_de.json
-          wget -q https://w2h-json.netlify.app/data/location_en.json
-          wget -q https://w2h-json.netlify.app/data/categories_de.json
-          wget -q https://w2h-json.netlify.app/data/categories_en.json
-          # weitere Dateien bei Bedarf…
+          wget -q -O public/data/location_de.json https://w2h-json.netlify.app/data/location_de.json
+          wget -q -O public/data/location_en.json https://w2h-json.netlify.app/data/location_en.json
+          wget -q -O public/data/categories_de.json https://w2h-json.netlify.app/data/categories_de.json
+          wget -q -O public/data/categories_en.json https://w2h-json.netlify.app/data/categories_en.json
 
-      - name: 📤 Commit & Push Änderungen
+      - name: ✅ Commit & Push Änderungen
         run: |
-          git config user.name "w2h bot"
-          git config user.email "bot@wind2horizon.com"
+          git config --global user.name "w2h-sync-bot"
+          git config --global user.email "bot@wind2horizon.com"
           git add public/data/*.json
-          git commit -m "🔁 Auto-Sync JSON-Daten von w2h-json-exports" || echo "No changes to commit"
+          git commit -m "🔄 Sync JSON-Daten von w2h-json [$(date -u +'%Y-%m-%d %H:%M UTC')]" || echo "Keine Änderungen zum Commit."
           git push
