@@ -1,68 +1,60 @@
 let map;
-let allMarkers = [];
-let activeCategories = new Set();
-let allLocations = [];
+let markers = [];
+let categories = new Set();
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 45.0, lng: 15.0 },
+    center: { lat: 45.8, lng: 15.95 },
     zoom: 6,
   });
 
-  fetch("data/locations_de.json")
-    .then(res => res.json())
+  fetch("https://w2h-json.netlify.app/data/locations_de.json")
+    .then(response => response.json())
     .then(data => {
-      allLocations = data;
-      setupCategoryUI(data);
-      loadMarkers();
+      data.forEach(location => {
+        const category = location.category_name_de;
+        categories.add(category);
+
+        const marker = new google.maps.Marker({
+          position: { lat: location.lat, lng: location.lng },
+          map: map,
+          title: location.display_name,
+          category: category,
+        });
+
+        markers.push(marker);
+      });
+
+      renderCategoryFilter();
     })
-    .catch(err => console.error("Fehler beim Laden der JSON:", err));
+    .catch(error => {
+      console.error("Fehler beim Laden der JSON:", error);
+    });
 }
 
-function setupCategoryUI(locations) {
-  const container = document.getElementById("layerControl");
-  const categories = [...new Set(locations.map(l => l.category_name_de))].sort();
-
+function renderCategoryFilter() {
+  const container = document.getElementById("layerSelector");
   categories.forEach(cat => {
     const label = document.createElement("label");
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    cb.checked = true;
-    cb.value = cat;
-
-    cb.addEventListener("change", () => {
-      if (cb.checked) {
-        activeCategories.add(cat);
-      } else {
-        activeCategories.delete(cat);
-      }
-      loadMarkers();
-    });
-
-    label.appendChild(cb);
-    label.append(` ${cat}`);
+    label.innerHTML = `
+      <input type="checkbox" value="${cat}" checked>
+      ${cat}
+    `;
+    label.style.marginRight = "1em";
     container.appendChild(label);
-
-    activeCategories.add(cat);
   });
-}
 
-function loadMarkers() {
-  // Entferne alte Marker
-  allMarkers.forEach(marker => marker.setMap(null));
-  allMarkers = [];
+  container.addEventListener("change", () => {
+    const selected = Array.from(
+      container.querySelectorAll("input[type=checkbox]:checked")
+    ).map(cb => cb.value);
 
-  // Filtere Marker nach aktiven Kategorien
-  allLocations.forEach(loc => {
-    const cat = loc.category_name_de;
-    if (!activeCategories.has(cat)) return;
-
-    const marker = new google.maps.Marker({
-      position: { lat: loc.lat, lng: loc.lng },
-      map,
-      title: loc.display_name || loc.category_name_de,
+    markers.forEach(marker => {
+      if (selected.includes(marker.category)) {
+        marker.setMap(map);
+      } else {
+        marker.setMap(null);
+      }
     });
-
-    allMarkers.push(marker);
   });
 }

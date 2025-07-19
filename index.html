@@ -2,40 +2,39 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Wind2Horizon – Kartenlayer</title>
+  <title>Wind2Horizon – Interaktive Karte</title>
   <style>
-    html, body, #map {
-      height: 100%;
-      margin: 0;
-      padding: 0;
+    #map {
+      height: 90vh;
+      width: 100%;
     }
-    #layerControl {
+
+    #layerSelector {
       position: absolute;
-      top: 1em;
-      left: 1em;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 1em;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      font-family: sans-serif;
-      z-index: 1000;
-      max-height: 90%;
-      overflow-y: auto;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 5;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
     }
-    label {
-      display: block;
-      margin-bottom: 0.5em;
-      cursor: pointer;
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
     }
   </style>
 </head>
 <body>
+  <div id="layerSelector"></div>
   <div id="map"></div>
-  <div id="layerControl"></div>
 
   <script src="map.js"></script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap">
-  </script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"
+    async
+    defer
+  ></script>
 </body>
 </html>
