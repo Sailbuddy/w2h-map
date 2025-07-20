@@ -8,10 +8,11 @@ async function initMap() {
     zoom: 6,
   });
 
-  const response = await fetch("https://w2h-json.netlify.app/location_de.json");
+  // Neue, korrekte URL zur JSON-Datei
+  const response = await fetch("https://w2h-json-exports.netlify.app/data/locations.json");
   const locations = await response.json();
 
-  // Alle Kategorien sammeln
+  // Alle Kategorien sammeln (deutsche Namen als Layer-Namen)
   const categories = [...new Set(locations.map(loc => loc.category_name_de))];
 
   // UI erzeugen
