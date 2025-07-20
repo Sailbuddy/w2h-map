@@ -18,10 +18,10 @@ jobs:
 
       - name: 🔽 Lade JSON-Dateien von w2h-json
         run: |
-          wget -q -O public/data/location_de.json https://w2h-json.netlify.app/data/location_de.json
-          wget -q -O public/data/location_en.json https://w2h-json.netlify.app/data/location_en.json
-          wget -q -O public/data/categories_de.json https://w2h-json.netlify.app/data/categories_de.json
-          wget -q -O public/data/categories_en.json https://w2h-json.netlify.app/data/categories_en.json
+          wget -q -O public/data/locations_de.json https://w2h-json.netlify.app/public/data/locations_de.json
+          wget -q -O public/data/locations_en.json https://w2h-json.netlify.app/public/data/locations_en.json
+          wget -q -O public/data/categories_de.json https://w2h-json.netlify.app/public/data/categories_de.json
+          wget -q -O public/data/categories_en.json https://w2h-json.netlify.app/public/data/categories_en.json
 
       - name: ✅ Commit & Push Änderungen
         run: |
