@@ -10,25 +10,57 @@
       padding: 0;
     }
 
+    #layerToggleIcon {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 36px;
+      height: 36px;
+      background: white url('https://img.icons8.com/ios-filled/50/000000/compass.png') no-repeat center center;
+      background-size: 70%;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(0,0,0,0.3);
+      z-index: 999;
+      cursor: pointer;
+    }
+
     #layerToggle {
       position: absolute;
-      top: 10px;
+      top: 60px;
       left: 10px;
       background: white;
       border-radius: 8px;
       padding: 10px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-      z-index: 999;
+      box-shadow: 0 0 8px rgba(0,0,0,0.25);
+      z-index: 998;
       font-family: sans-serif;
+      display: none;
+      transition: opacity 0.3s ease;
     }
 
     .layer-checkbox {
       display: block;
-      margin: 5px 0;
+      margin: 6px 0;
+    }
+
+    @media (hover: hover) {
+      #layerToggleIcon:hover + #layerToggle {
+        display: block;
+      }
+      #layerToggle:hover {
+        display: block;
+      }
+    }
+
+    @media (hover: none) {
+      #layerToggleIcon:active + #layerToggle {
+        display: block;
+      }
     }
   </style>
 </head>
 <body>
+  <div id="layerToggleIcon" title="Kartenlayer auswählen"></div>
   <div id="layerToggle"></div>
   <div id="map"></div>
 

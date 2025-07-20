@@ -1,12 +1,16 @@
 let map;
 let markerLayers = {};
 let allMarkers = [];
+let infoWindow; // globales InfoWindow, nur eins pro Karte
 
 async function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 44.5, lng: 14.2 },
     zoom: 6,
   });
+
+  // Gemeinsames InfoWindow vorbereiten
+  infoWindow = new google.maps.InfoWindow();
 
   // Neue, korrekte URL zur JSON-Datei
   const response = await fetch("https://w2h-json-exports.netlify.app/data/locations.json");
@@ -39,6 +43,12 @@ async function initMap() {
       position: { lat: loc.lat, lng: loc.lng },
       map: map,
       title: loc.display_name || "Ort",
+    });
+
+    // Klick auf Marker → InfoWindow öffnen
+    marker.addListener("click", () => {
+      infoWindow.setContent(`<strong>${loc.display_name || "Ort"}</strong>`);
+      infoWindow.open(map, marker);
     });
 
     markerLayers[loc.category_name_de].push(marker);
