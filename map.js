@@ -54,6 +54,15 @@ async function initMap() {
     markerLayers[loc.category_name_de].push(marker);
     allMarkers.push(marker);
   });
+
+  // Toggle-Logik für Touchgeräte oder Klicks
+  const icon = document.getElementById("layerToggleIcon");
+  if (icon) {
+    icon.addEventListener("click", () => {
+      const panel = document.getElementById("layerToggle");
+      panel.style.display = (panel.style.display === "block") ? "none" : "block";
+    });
+  }
 }
 
 function updateMarkersVisibility() {
