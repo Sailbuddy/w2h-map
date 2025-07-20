@@ -13,28 +13,30 @@ body {
   height: 900px;
   width: 77%;
   border: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* optionaler Schatten für Tiefe */
-  border-radius: 12px; /* abgerundete Ecken, wenn du’s magst */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 12px;
 }
 
-/* 🧭 Floating Icon für Layersteuerung */
+/* Floating Icon für Layersteuerung, hier mit Steuerrad-Icon */
 #layer-toggle {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: white;
+  width: 48px;
+  height: 48px;
+  background: white url('https://img.icons8.com/ios-filled/50/000000/settings.png') no-repeat center center;
+  background-size: 70%;
   border-radius: 50%;
-  padding: 10px;
+  padding: 8px;
   box-shadow: 0 0 8px rgba(0,0,0,0.2);
   cursor: pointer;
   z-index: 1001;
-  font-size: 1.2em;
 }
 
-/* 📋 Panel mit Checkboxen */
+/* Panel mit Checkboxen */
 #layer-panel {
   position: absolute;
-  bottom: 70px;
+  bottom: 80px;
   right: 20px;
   width: 220px;
   max-height: 300px;
@@ -63,7 +65,7 @@ body {
   margin-right: 0.5em;
 }
 
-/* 📱 Mobile Ansicht */
+/* Mobile Ansicht */
 @media (max-width: 768px) {
   #map {
     width: 100%;
@@ -79,7 +81,8 @@ body {
 
   #layer-toggle {
     right: 10px;
-    padding: 8px;
-    font-size: 1em;
+    width: 40px;
+    height: 40px;
+    padding: 6px;
   }
 }
