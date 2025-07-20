@@ -1,67 +1,21 @@
+<!-- ✅ index.html mit externer style.css und bereinigtem Head -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <title>Wind2Horizon Karte</title>
-  <style>
-    html, body, #map {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
-    #layerToggleIcon {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      width: 42px;
-      height: 42px;
-      background: white url('e56daea5-a7ae-4880-9e4d-2800a1abd46b.png') no-repeat center center;
-      background-size: 70%;
-      border-radius: 50%;
-      box-shadow: 0 0 6px rgba(0,0,0,0.3);
-      z-index: 999;
-      cursor: pointer;
-    }
-
-    #layerToggle {
-      position: absolute;
-      top: 60px;
-      left: 10px;
-      background: white;
-      border-radius: 8px;
-      padding: 10px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.25);
-      z-index: 998;
-      font-family: sans-serif;
-      display: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .layer-checkbox {
-      display: block;
-      margin: 6px 0;
-    }
-
-    @media (hover: hover) {
-      #layerToggleIcon:hover + #layerToggle {
-        display: block;
-      }
-      #layerToggle:hover {
-        display: block;
-      }
-    }
-
-    @media (hover: none) {
-      #layerToggleIcon:active + #layerToggle {
-        display: block;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="layerToggleIcon" title="Kartenlayer auswählen"></div>
-  <div id="layerToggle"></div>
+  <div id="layer-toggle" title="Kartenlayer anzeigen">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Nautical_Wheel_icon.png/48px-Nautical_Wheel_icon.png" alt="Layer" style="width:24px; height:24px;">
+  </div>
+
+  <div id="layer-panel">
+    <h3>Kategorien</h3>
+    <div id="layer-controls"></div>
+  </div>
+
   <div id="map"></div>
 
   <script src="map.js"></script>
