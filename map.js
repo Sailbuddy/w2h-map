@@ -4,8 +4,8 @@ let infoWindow;
 
 async function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 44.5, lng: 14.2 },
-    zoom: 6,
+    center: { lat: 43.5, lng: 15.0 }, // 🎯 Adria-Fokus (Split)
+    zoom: 7,                          // 🔍 Idealer Zoom für Küstenübersicht
   });
 
   infoWindow = new google.maps.InfoWindow();
