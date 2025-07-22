@@ -1,96 +1,59 @@
-/* style.css – Dynamisch angepasstes Layout für Wind2Horizon-Karte */
-
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  width: 100%;
-  font-family: sans-serif;
-  background: #f5faff; /* sanftes Wind2Horizon-Blau */
-  display: flex;
-  justify-content: center;
 }
 
-/* Karte: dynamische Höhe & Breite bei großen Screens */
 #map {
+  width: 100%;
   height: 100vh;
-  width: 100vw;
-  max-width: 100%;
-  max-height: 100%;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-radius: 12px;
+  position: relative;
 }
 
-/* 🧭 Floating Icon für Layersteuerung – Kompass (jetzt oben rechts) */
+/* Toggle-Button (jetzt rechts oben) */
 #layer-toggle {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 48px;
-  height: 48px;
-  background: white url('https://img.icons8.com/ios-filled/50/000000/compass.png') no-repeat center center;
-  background-size: 70%;
-  border-radius: 50%;
-  padding: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
-  cursor: pointer;
+  top: 12px;
+  right: 12px;
   z-index: 1001;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  padding: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+#layer-toggle:hover {
+  transform: scale(1.1);
 }
 
-/* 📋 Panel mit Checkboxen (jetzt unterhalb des Icons) */
+/* Panel (erscheint unterhalb des Symbols) */
 #layer-panel {
-  position: absolute;
-  top: 80px;
-  right: 20px;
-  width: 220px;
-  max-height: 300px;
-  overflow-y: auto;
-  background: white;
-  border-radius: 12px;
-  padding: 1em;
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
   display: none;
+  position: absolute;
+  top: 52px;
+  right: 12px;
   z-index: 1000;
-  font-family: sans-serif;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
+  max-width: 250px;
 }
 
 #layer-panel h3 {
-  margin-top: 0;
-  font-size: 1em;
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #2c3e50;
 }
 
-#layer-controls label {
+#layer-panel label {
   display: block;
-  margin: 0.5em 0;
-  cursor: pointer;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #34495e;
 }
 
-#layer-controls input {
-  margin-right: 0.5em;
-}
-
-/* 📱 Mobile Ansicht */
-@media (max-width: 768px) {
-  #map {
-    width: 100%;
-    height: calc(100vh - 80px);
-    border-radius: 0;
-  }
-
-  #layer-panel {
-    right: 10px;
-    top: 70px;
-    width: 180px;
-    font-size: 0.9em;
-  }
-
-  #layer-toggle {
-    top: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    padding: 6px;
-    background-size: 60%;
-  }
+#layer-panel input[type="checkbox"] {
+  margin-right: 8px;
 }
