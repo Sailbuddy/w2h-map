@@ -17,14 +17,14 @@ body {
   border-radius: 12px;
 }
 
-/* Floating Icon für Layersteuerung, hier mit Steuerrad-Icon */
+/* 🧭 Floating Icon für Layersteuerung – Kompass */
 #layer-toggle {
   position: absolute;
   bottom: 20px;
   right: 20px;
   width: 48px;
   height: 48px;
-  background: white url('https://img.icons8.com/ios-filled/50/000000/settings.png') no-repeat center center;
+  background: white url('https://img.icons8.com/ios-filled/50/000000/compass.png') no-repeat center center;
   background-size: 70%;
   border-radius: 50%;
   padding: 8px;
@@ -33,7 +33,7 @@ body {
   z-index: 1001;
 }
 
-/* Panel mit Checkboxen */
+/* 📋 Panel mit Checkboxen */
 #layer-panel {
   position: absolute;
   bottom: 80px;
@@ -65,7 +65,7 @@ body {
   margin-right: 0.5em;
 }
 
-/* Mobile Ansicht */
+/* 📱 Mobile Ansicht */
 @media (max-width: 768px) {
   #map {
     width: 100%;
@@ -84,5 +84,6 @@ body {
     width: 40px;
     height: 40px;
     padding: 6px;
+    background-size: 60%;
   }
 }
