@@ -1,4 +1,5 @@
-// Kombiniert: Layersteuerung + Infofenster (Name & Beschreibung)
+
+// Kombiniert: Layersteuerung + Infofenster (Name, Beschreibung, Kategorie, Link)
 let map;
 let infoWindow;
 let markerLayers = {};
@@ -37,23 +38,28 @@ async function initMap() {
     const marker = new google.maps.Marker({
       position: { lat: loc.lat, lng: loc.lng },
       map,
-      title: loc.name_en || "Unnamed"
+      title: loc.display_name || "Location"
     });
 
+    const name = loc.display_name || "Unnamed Location";
+    const desc = loc.description_en || "No description available.";
+    const category = loc.category_name_en || "Uncategorized";
+    const link = loc.maps_url || loc.website || null;
+
+    const html = `
+      <div style="max-width:240px;">
+        <h3 style="margin-top:0;">${name}</h3>
+        <p style="margin:0;"><strong>Category:</strong> ${category}</p>
+        <p style="margin-top:8px;">${desc}</p>
+        ${link ? `<p><a href="${link}" target="_blank">🗺️ View on map</a></p>` : ""}
+      </div>
+    `;
+
     marker.addListener("click", () => {
-      const name = loc.name_en || "Unnamed";
-      const desc = loc.description_en || "No description available.";
-      const html = `
-        <div style="max-width:240px;">
-          <h3 style="margin-top:0;">${name}</h3>
-          <p style="margin-top:8px;">${desc}</p>
-        </div>
-      `;
       infoWindow.setContent(html);
       infoWindow.open(map, marker);
     });
 
-    const category = loc.category_name_en;
     if (!markerLayers[category]) {
       markerLayers[category] = [];
     }
@@ -63,7 +69,7 @@ async function initMap() {
 
 function updateMarkersVisibility() {
   for (const [category, markers] of Object.entries(markerLayers)) {
-    const checkbox = document.querySelector(`input[data-category="{category}"]`);
+    const checkbox = document.querySelector(`input[data-category="${category}"]`);
     const visible = checkbox?.checked;
     markers.forEach(marker => marker.setVisible(visible));
   }
