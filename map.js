@@ -1,5 +1,5 @@
 
-// Kombiniert: Layersteuerung + Infofenster (Name, Beschreibung, Kategorie, Link)
+// Funktionierende Version mit Layersteuerung & Infofenster (EN)
 let map;
 let infoWindow;
 let markerLayers = {};
@@ -13,7 +13,7 @@ async function initMap() {
 
   infoWindow = new google.maps.InfoWindow();
 
-  const response = await fetch("https://w2h-json.netlify.app/location_export_en.json");
+  const response = await fetch("https://w2h-json-exports.netlify.app/data/locations.json");
   const locations = await response.json();
 
   const categories = [...new Set(locations.map(loc => loc.category_name_en))];
