@@ -4,3 +4,14 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET"
     Access-Control-Allow-Headers = "Content-Type"
+
+# --- Foto-Proxy: /api/gphoto -> Netlify Function ---
+[[redirects]]
+  from = "/api/gphoto"
+  to = "/.netlify/functions/gphoto"
+  status = 200
+  force = true
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
